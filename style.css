@@ -31,7 +31,7 @@ h1 {
 
 form {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 15px;
 }
 
