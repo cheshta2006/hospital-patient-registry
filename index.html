@@ -7,22 +7,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <h1>🏥 Hospital Patient Registry</h1>
 
-    <h1>Hospital Patient Registry</h1>
+        <form id="patientForm">
+            <input type="text" id="name" placeholder="Patient Name" required>
 
-    <form id="patientForm">
-        <input type="text" id="name" placeholder="Patient Name" required>
+            <input type="date" id="admissionDate" required>
 
-        <input type="date" id="admissionDate" required>
+            <input type="text" id="illness" placeholder="Illness Name" required>
 
-        <input type="text" id="illness" placeholder="Illness Name" required>
+            <button type="submit">Register Patient</button>
+        </form>
 
-        <button type="submit">Register Patient</button>
-    </form>
+        <button class="show-btn" onclick="loadPatients()">
+            Show Registered Patients
+        </button>
 
-    <button onclick="loadPatients()">Show Registered Patients</button>
-
-    <ul id="patientList"></ul>
+        <ul id="patientList"></ul>
+    </div>
 
     <script src="script.js"></script>
 </body>
