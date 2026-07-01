@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const path = require("path");
 
 dotenv.config();
 
@@ -9,7 +10,11 @@ const Patient = require("./models/Patients");
 const app = express();
 
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(__dirname));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))
