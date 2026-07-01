@@ -1,40 +1,42 @@
 const express = require("express");
-const fs = require("fs");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const Patient = require("./models/Patients");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.static("public"));
 
-app.post("/register", (req, res) => {
-    const patient = req.body;
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log(err));
 
-    let patients = [];
+app.post("/register", async (req, res) => {
 
-    if (fs.existsSync("patients.json")) {
-        patients = JSON.parse(fs.readFileSync("patients.json"));
-    }
+    const patient = new Patient(req.body);
 
-    patients.push(patient);
+    await patient.save();
 
-    fs.writeFileSync(
-        "patients.json",
-        JSON.stringify(patients, null, 2)
-    );
+    res.json({
+        message: "Patient Registered Successfully"
+    });
 
-    res.send("Patient Registered Successfully");
 });
 
-app.get("/patients", (req, res) => {
-    const patients = JSON.parse(
-        fs.readFileSync("patients.json")
-    );
+app.get("/patients", async (req, res) => {
+
+    const patients = await Patient.find();
 
     res.json(patients);
+
 });
 
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on ${PORT}`);
 });
